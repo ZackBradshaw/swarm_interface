@@ -65,6 +65,15 @@ def Root():
 #     return jsonify({"executed" : True,
 #                     "process" : "ended" })
 
+@app.route("/api/iframe/source", methods=["POST"])
+def iframe_source():
+    data = request.json
+    if data['type'] == 'gradio':
+        port = data['port']
+        src_href = f'http://localhost:{port}'
+        return jsonify({"iframe_src": src_href})
+    return jsonify({"error": "Invalid iframe type"}), 400
+
 @app.route("/api/preview_vnc", methods=["POST"])
 def preview_vnc():
     data = request.json
