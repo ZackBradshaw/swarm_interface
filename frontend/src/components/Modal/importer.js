@@ -12,10 +12,28 @@ export default function Import(props){
     const [embedUrl, setEmbedUrl] = useState(""); 
     const [vmid, setVmid] = useState(''); 
     const [node, setNode] = useState(''); 
+    const [iframeSrc, setIframeSrc] = useState(""); 
 
     const handleProxmoxSubmit = async (e) => {
         e.preventDefault();
-        props.onAddProxmoxVnc({ vmid, node });
+        const requestData = { vmid, node };
+        fetch("http://localhost:2000/api/proxmox/vnc", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.iframe_src) {
+                setIframeSrc(data.iframe_src); 
+                props.onAddEmbed({ url: data.iframe_src, type: 'embed' }); 
+            } else {
+                console.error("Failed to get iframe source URL");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching iframe source URL:", error);
+        });
     };
 
     return (<div>
@@ -115,9 +133,17 @@ export default function Import(props){
                                 onChange={(e) => setNode(e.target.value)}
                             />
                             <button className="btn btn-primary mt-2" type="submit">
-                                Create Proxmox VNC
+                                Generate Proxmox noVNC Session
                             </button>
                         </form>
+                        {iframeSrc && 
+                            <div className='p-5 flex flex-col items-start'>
+                                <a href={iframeSrc} target="_blank" rel="noopener noreferrer" className="mb-2 underline text-blue-600 hover:text-blue-800 visited:text-purple-600">Access Proxmox noVNC Session</a>
+                                <button onClick={() => navigator.clipboard.writeText(iframeSrc)} className="btn btn-primary">
+                                    Copy Session Link
+                                </button>
+                            </div>
+                        }
                     </div>
                     }
                     
