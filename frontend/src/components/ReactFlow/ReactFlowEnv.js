@@ -67,6 +67,13 @@ export default function ReactEnviorment() {
       });
       const data = await response.json();
       // Use data.iframe_src to create a new node in React Flow
+      const newNode = {
+        id: `proxmox-vnc-${nodes.length + 1}`,
+        type: 'custom',
+        position: reactFlowInstance.project({ x: 0, y: 0 }),
+        data: { label: `Proxmox VM ${vmid}`, url: data.iframe_src },
+      };
+      setNodes((nds) => nds.concat(newNode));
     };
 
     const handleAddEmbed = useCallback((embedData) => {

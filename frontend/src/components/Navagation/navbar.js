@@ -60,7 +60,8 @@ export default class Navbar extends Component{
         const pattern = {
             local : new RegExp('^https?://(localhost)(:[0-9]+)?(/)?$'),
             share : new RegExp('^https?://(?:[a-zA-Z0-9]+\\.gradio\\.live)/?$'),
-            huggingFace: new RegExp('^https?://([a-zA-Z0-9-]+\\.hf\\.space)/?$')
+            huggingFace: new RegExp('^https?://([a-zA-Z0-9-]+\\.hf\\.space)/?$'),
+            proxmoxVNC: new RegExp('^wss?://([a-zA-Z0-9-]+\\.yourdomain\\.com)/?$') // Regex pattern for Proxmox VNC URLs
         } 
 
         if (this.state.name.length > 20 ||
@@ -69,7 +70,8 @@ export default class Navbar extends Component{
             this.state.text.includes(" ") || 
             (!pattern.local.test(this.state.text) &&
             !pattern.share.test(this.state.text) &&
-            !pattern.hugginFace.test(this.state.text))){
+            !pattern.huggingFace.test(this.state.text) &&
+            !pattern.proxmoxVNC.test(this.state.text))){
             
                 this.setState({
                     'text': '',
@@ -83,6 +85,26 @@ export default class Navbar extends Component{
 
             }).catch(() => this.setState({'text': '', 'name' : '',  'error' : true, }))
           }).catch((err)=> this.setState({'text': '','name' : '', 'error' : true,}))
+    }
+
+    /**
+     * Render a tab for the Proxmox VNC that can be dragged into React Flow
+     */
+    renderProxmoxVncTab = () => {
+        // Assuming the Proxmox VNC tab information is stored in the state
+        const { proxmoxVncInfo } = this.state;
+        if (!proxmoxVncInfo) return null; // If no Proxmox VNC info, don't render anything
+
+        return (
+            <li onDragStart={(event) => this.onDragStart(event, 'proxmoxVNC', proxmoxVncInfo, -1)} 
+                className="text-white text-md flex flex-col text-center items-center cursor-grab shadow-lg p-5 px-2 mt-4 rounded-md hover:animate-pulse"
+                draggable>
+                <div className="absolute -mt-2 text-4xl opacity-60 z-10">{random_emoji()}</div>
+                <h4 className="max-w-full font-sans text-blue-50 leading-tight font-bold text-xl flex-1 z-20" style={{"textShadow": "0px 1px 2px rgba(0, 0, 0, 0.25)"}}>
+                    Proxmox VNC
+                </h4>
+            </li>
+        );
     }
 
     /**
@@ -239,3 +261,4 @@ export default class Navbar extends Component{
         </div>)
     }
 }
+
