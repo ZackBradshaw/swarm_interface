@@ -1,4 +1,4 @@
-import CustomNodeIframe from "../Nodes/EmbedNode.js";
+import CustomNodeIframe from "../Nodes/Custom.js";
 import '../../css/dist/output.css'
 import ReactFlow, { Background,
                     applyNodeChanges,
@@ -17,13 +17,10 @@ import { useThemeDetector } from '../../helper/visual'
 import {CgMoreVerticalAlt} from 'react-icons/cg'
 import {BsFillEraserFill} from 'react-icons/bs' 
 import {FaRegSave} from 'react-icons/fa'
-import ProxmoxVM from '../Proxmox/proxmox.js';
-import EmbedNode from "../Nodes/EmbedNode.js"; 
 
 const NODE = {
     custom : CustomNodeIframe,
-    proxmoxVM: ProxmoxVM,
-    embed: EmbedNode, 
+    embed: Custom, 
   }
 
 const EDGE = {
@@ -217,15 +214,6 @@ export default function ReactEnviorment() {
           <FaRegSave title="Save" className={`mt-6 text-black dark:text-white ${tool ? "visible" : " invisible"} ml-auto mr-auto `} onClick={() => onSave()}/> 
           <BsFillEraserFill title="Erase" className={`mt-6 text-black dark:text-white ml-auto mr-auto ${tool ? "visible" : " invisible"} `} onClick={() => onErase()}/>
         </div>
-        {showProxmoxForm && (
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                addProxmoxVMNode(e.target.vmAddress.value);
-            }} className="absolute top-10 left-10 z-50">
-                <input name="vmAddress" type="text" placeholder="Enter Proxmox VM Address" required className="p-2"/>
-                <button type="submit" className="p-2 bg-blue-500 text-white">Add VM</button>
-            </form>
-        )}
         <button onClick={() => setShowProxmoxForm(true)} className="absolute top-10 right-10 z-50 p-2 bg-green-500 text-white">Add Proxmox VM</button>
         <div className={`flex h-screen w-screen ${theme ? "dark" : ""} transition-all`}>    
           <ReactFlowProvider>
