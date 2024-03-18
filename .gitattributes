@@ -1,3 +1,12 @@
 *.gif filter=lfs diff=lfs merge=lfs -text
+images/delete_1.gif filter=lfs diff=lfs merge=lfs -text
+images/theme.gif filter=lfs diff=lfs merge=lfs -text
+images/delete_2.gif filter=lfs diff=lfs merge=lfs -text
+backend/src/example/data/pytorch_model.bin filter=lfs diff=lfs merge=lfs -text
+images/app.png filter=lfs diff=lfs merge=lfs -text
+images/application_dark.png filter=lfs diff=lfs merge=lfs -text
+images/application_light.png filter=lfs diff=lfs merge=lfs -text
+images/light-app.png filter=lfs diff=lfs merge=lfs -text
+images/Header.gif filter=lfs diff=lfs merge=lfs -text
 *.bin filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
