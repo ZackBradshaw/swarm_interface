@@ -1,42 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Modal, Message } from 'semantic-ui-react';
-import { useFetch } from '../../hooks/useFetch';
-import Debug from '../../utilities/Debug';
 
 /**
  * Custom hook to check iframe reachability.
  * @param {string} url - The URL to check for reachability.
  * @returns {boolean} - True if reachable, false otherwise.
  */
-const useCheckReachability = (url) => {
-  const { data, error } = useFetch(url);
-  Debug.log('Checking reachability for:', url);
-  return { isReachable: !!data, error };
-};
-
-/**
- * A component to render a debug message.
- * @param {string} message - The debug message to display.
- */
-const DebugMessage = ({ message }) => {
-  useEffect(() => {
-    Debug.log(message);
-  }, [message]);
-
-  return null; // This component does not render anything.
-};
-
-/**
- * A function to create a one-purpose utility.
- * @param {Function} fn - The function to execute.
- * @param {Array} args - The arguments to pass to the function.
- * @returns {any} - The result of the function execution.
- */
-const executeUtility = (fn, ...args) => {
-  Debug.log('Executing utility function with args:', args);
-  return fn(...args);
-};
-
 import {TbResize} from 'react-icons/tb'
 import {BiCube, BiRefresh} from 'react-icons/bi'
 import {BsTrash} from 'react-icons/bs'
@@ -80,6 +48,23 @@ export default function CustomNodeIframe({id, data}){
           clearInterval(fetched)
         },1000) 
     },[])
+
+const [iframeUrl, setIframeUrl] = useState('');
+const [iframeLabel, setIframeLabel] = useState('');
+
+const handleIframeUrlChange = (e) => {
+    setIframeUrl(e.target.value);
+};
+
+const handleIframeLabelChange = (e) => {
+    setIframeLabel(e.target.value);
+};
+
+const addIframeNode = () => {
+    handleAddEmbed({ url: iframeUrl, label: iframeLabel || 'Embedded Content' });
+    setIframeUrl(''); // Reset the input field after adding
+    setIframeLabel('');
+};
 
 
     return (
