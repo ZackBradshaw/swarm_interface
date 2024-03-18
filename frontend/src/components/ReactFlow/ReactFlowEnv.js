@@ -1,3 +1,4 @@
+import Custom from "../Nodes/Custom.js";
 import CustomNodeIframe from "../Nodes/Custom.js";
 import '../../css/dist/output.css'
 import ReactFlow, { Background,
@@ -73,15 +74,16 @@ export default function ReactEnviorment() {
       setNodes((nds) => nds.concat(newNode));
     };
 
-    const handleAddEmbed = useCallback((embedData) => {
-      const newNode = {
-        id: `embed-${nodes.length + 1}`,
-        type: 'embed',
-        position: reactFlowInstance.project({ x: 0, y: 0 }), // Adjust position as needed
-        data: { url: embedData.url, width: embedData.width || '100%', height: embedData.height || '400px' },
-      };
-      setNodes((nds) => nds.concat(newNode));
-    }, [nodes, reactFlowInstance]);
+  const handleAddEmbed = useCallback((embedData) => {
+    const newNode = {
+      id: `embed-${nodes.length + 1}`,
+      type: 'embed',
+      position: reactFlowInstance.project({ x: 0, y: 0 }), // Adjust position as needed
+      data: { url: embedData.url, width: embedData.width || '100%', height: embedData.height || '400px' },
+    };
+    setNodes((nds) => nds.concat(newNode));
+    console.log(`Adding embed with URL: ${embedData.url} and Label: ${embedData.label}`);
+  }, [nodes, reactFlowInstance]);
 
     const onNodesChange = useCallback(
       (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),

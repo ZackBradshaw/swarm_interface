@@ -15,7 +15,7 @@ import { useSpring, animated } from 'react-spring'
 const MINIMUM_HEIGHT = 600;
 const MINIMUM_WIDTH = 540; 
 
-export default function CustomNodeIframe({id, data}){
+export default function CustomNodeIframe({id, data, handleAddEmbed}){
     const [collapsed, setCollapsible] = useState(true)
     const [{width, height}, api] = useSpring(() => ({width: MINIMUM_WIDTH, height: MINIMUM_HEIGHT }))
     const [sizeAdjuster, setSizeAdjuster] = useState(false)
@@ -106,3 +106,4 @@ const addIframeNode = () => {
         }
       </div>)
 }
+
