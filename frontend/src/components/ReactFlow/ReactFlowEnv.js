@@ -57,33 +57,33 @@ export default function ReactEnviorment() {
       restore();
     },[deleteNode, deleteEdge]);
 
-    const handleAddProxmoxVnc = async ({ vmid, node }) => {
-      const response = await fetch('http://localhost:5000/api/proxmox/vnc', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vmid, node }),
-      });
-      const data = await response.json();
-      // Use data.iframe_src to create a new node in React Flow
-      const newNode = {
-        id: `proxmox-vnc-${nodes.length + 1}`,
-        type: 'custom',
-        position: reactFlowInstance.project({ x: 0, y: 0 }),
-        data: { label: `Proxmox VM ${vmid}`, url: data.iframe_src },
-      };
-      setNodes((nds) => nds.concat(newNode));
-    };
+  //   const handleAddProxmoxVnc = async ({ vmid, node }) => {
+  //     const response = await fetch('http://localhost:5000/api/proxmox/vnc', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ vmid, node }),
+  //     });
+  //     const data = await response.json();
+  //     // Use data.iframe_src to create a new node in React Flow
+  //     const newNode = {
+  //       id: `proxmox-vnc-${nodes.length + 1}`,
+  //       type: 'custom',
+  //       position: reactFlowInstance.project({ x: 0, y: 0 }),
+  //       data: { label: `Proxmox VM ${vmid}`, url: data.iframe_src },
+  //     };
+  //     setNodes((nds) => nds.concat(newNode));
+  //   };
 
-  const handleAddEmbed = useCallback((embedData) => {
-    const newNode = {
-      id: `embed-${nodes.length + 1}`,
-      type: 'embed',
-      position: reactFlowInstance.project({ x: 0, y: 0 }), // Adjust position as needed
-      data: { url: embedData.url, width: embedData.width || '100%', height: embedData.height || '400px' },
-    };
-    setNodes((nds) => nds.concat(newNode));
-    console.log(`Adding embed with URL: ${embedData.url} and Label: ${embedData.label}`);
-  }, [nodes, reactFlowInstance]);
+  // const handleAddEmbed = useCallback((embedData) => {
+  //   const newNode = {
+  //     id: `embed-${nodes.length + 1}`,
+  //     type: 'embed',
+  //     position: reactFlowInstance.project({ x: 0, y: 0 }), // Adjust position as needed
+  //     data: { url: embedData.url, width: embedData.width || '100%', height: embedData.height || '400px' },
+  //   };
+  //   setNodes((nds) => nds.concat(newNode));
+  //   console.log(`Adding embed with URL: ${embedData.url} and Label: ${embedData.label}`);
+  // }, [nodes, reactFlowInstance]);
 
     const onNodesChange = useCallback(
       (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -197,16 +197,16 @@ export default function ReactEnviorment() {
       },
       [reactFlowInstance, nodes, deleteNode]);
 
-    const addProxmoxVMNode = (vmAddress) => {
-        const newNode = {
-            id: `proxmox-vm-${nodes.length + 1}`,
-            type: 'proxmoxVM',
-            position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
-            data: { vmAddress },
-        };
-        setNodes((nds) => nds.concat(newNode));
-        setShowProxmoxForm(false);
-    };
+    // const addProxmoxVMNode = (vmAddress) => {
+    //     const newNode = {
+    //         id: `proxmox-vm-${nodes.length + 1}`,
+    //         type: 'proxmoxVM',
+    //         position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
+    //         data: { vmAddress },
+    //     };
+    //     setNodes((nds) => nds.concat(newNode));
+    //     setShowProxmoxForm(false);
+    // };
 
     return (
       <div className={`${theme ? "dark" : ""}`}>          
@@ -216,7 +216,6 @@ export default function ReactEnviorment() {
           <FaRegSave title="Save" className={`mt-6 text-black dark:text-white ${tool ? "visible" : " invisible"} ml-auto mr-auto `} onClick={() => onSave()}/> 
           <BsFillEraserFill title="Erase" className={`mt-6 text-black dark:text-white ml-auto mr-auto ${tool ? "visible" : " invisible"} `} onClick={() => onErase()}/>
         </div>
-        <button onClick={() => setShowProxmoxForm(true)} className="absolute top-10 right-10 z-50 p-2 bg-green-500 text-white">Add Proxmox VM</button>
         <div className={`flex h-screen w-screen ${theme ? "dark" : ""} transition-all`}>    
           <ReactFlowProvider>
           <Navbar onDelete={deleteNodeContains} colour={JSON.parse(localStorage.getItem('colour'))} emoji={JSON.parse(localStorage.getItem('emoji'))} nodes={nodes}/>
@@ -231,3 +230,4 @@ export default function ReactEnviorment() {
       </div>
     );
   }
+
