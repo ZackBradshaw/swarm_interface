@@ -152,10 +152,21 @@ export default class Navbar extends Component{
         this.setState({'open' : !this.state.open})
     }
 
+    /**
+     * 
+     * @param {*} e : event type to get the target value of the current input
+     * @param {*} type : text | name string that set the changed value of the input to the current value 
+     */
     updateText = (e, type) => {
         this.setState({[`${type}`] : e.target.value })
     }
 
+    /**
+     * 
+     * @param {*} item : object infomation from the flask api  
+     * @param {*} index : current index with in the list
+     * @returns div component that contians infomation of gradio 
+     */
     subComponents(item, index){
         
         return(<>
@@ -212,3 +223,4 @@ export default class Navbar extends Component{
         </div>)
     }
 }
+

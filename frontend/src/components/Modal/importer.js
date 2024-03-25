@@ -7,20 +7,18 @@ import { useState } from 'react'
 import { BsSearch } from 'react-icons/bs';
 
 export default function Import(props) {
-    // const [tab, setTab] = useState("gradio")
     const [subTab, setSubTab] = useState(0)
     const [embedUrl, setEmbedUrl] = useState("");
     const [vmid, setVmid] = useState('');
     const [node, setNode] = useState('');
     const [iframeSrc, setIframeSrc] = useState("");
     const [tab, setTab] = useState('')
-
+    const [iframeTitle, setIframeTitle] = useState(""); // Added state for iframeTitle
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Assuming iframeSrc is already bound to an input field where users can paste any iframe link
         console.debug("Embed submit:", iframeSrc);
-        props.onAddEmbed({ url: iframeSrc, type: 'embed' });
+        props.onAddEmbed({ url: iframeSrc, title: iframeTitle, type: 'embed' }); // Modified to include title
     };
 
     const handleProxmoxSubmit = async (e) => {
@@ -131,7 +129,6 @@ export default function Import(props) {
                 </div>
             }
 
-            // Update the form to include a title input
             {tab === "IframeURL" && (
                 <form onSubmit={handleSubmit}>
                     <input
@@ -152,7 +149,6 @@ export default function Import(props) {
                 </form>
             )}
 
-            // Ensure this conditional rendering block is correctly placed within your component's return statement
             {iframeSrc && (
                 <div className='p-5 flex flex-col items-start'>
                     <iframe src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
