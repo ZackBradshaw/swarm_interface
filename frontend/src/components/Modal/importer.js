@@ -7,12 +7,14 @@ import { useState } from 'react'
 import { BsSearch } from 'react-icons/bs';
 
 export default function Import(props) {
-    const [tab, setTab] = useState("gradio")
+    // const [tab, setTab] = useState("gradio")
     const [subTab, setSubTab] = useState(0)
     const [embedUrl, setEmbedUrl] = useState("");
     const [vmid, setVmid] = useState('');
     const [node, setNode] = useState('');
     const [iframeSrc, setIframeSrc] = useState("");
+    const [tab, setTab] = useState('')
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,27 +23,27 @@ export default function Import(props) {
         props.onAddEmbed({ url: iframeSrc, type: 'embed' });
     };
 
-    // const handleProxmoxSubmit = async (e) => {
-    //     e.preventDefault();
-    //     const requestData = { vmid, node };
-    //     fetch("http://localhost:2000/api/proxmox/vnc", {
-    //         method: "POST",
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify(requestData)
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if(data.iframe_src) {
-    //             setIframeSrc(data.iframe_src); 
-    //             props.onAddEmbed({ url: data.iframe_src, type: 'embed' }); 
-    //         } else {
-    //             console.error("Failed to get iframe source URL");
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.error("Error fetching iframe source URL:", error);
-    //     });
-    // };
+    const handleProxmoxSubmit = async (e) => {
+        e.preventDefault();
+        const requestData = { vmid, node };
+        fetch("http://localhost:2000/api/proxmox/vnc", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.iframe_src) {
+                    setIframeSrc(data.iframe_src);
+                    props.onAddEmbed({ url: data.iframe_src, type: 'embed' });
+                } else {
+                    console.error("Failed to get iframe source URL");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching iframe source URL:", error);
+            });
+    };
 
     return (<div>
         <Modal
@@ -128,8 +130,17 @@ export default function Import(props) {
                     <Shared type="streamlit" textHandler={props.textHandler} appendHandler={props.appendHandler} handelError={props.handelError} catch={props.catch} />
                 </div>
             }
+
+            // Update the form to include a title input
             {tab === "IframeURL" && (
                 <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Enter iframe title here..."
+                        value={iframeTitle}
+                        onChange={(e) => setIframeTitle(e.target.value)}
+                        className="input"
+                    />
                     <input
                         type="text"
                         placeholder="Enter iframe link here..."

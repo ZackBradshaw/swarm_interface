@@ -23,7 +23,8 @@ export default class Navbar extends Component{
             emoji : props.emoji || [],
             mode : false,
             modal : false,
-            error : false
+            error : false,
+            proxmoxVncInfo: null // Added missing state for Proxmox VNC info
            }
        
     }
@@ -33,10 +34,6 @@ export default class Navbar extends Component{
 
     }
 
-    /**
-     *  Asynchronously call the Flask api server every second to check if there exist a gradio application info
-     *  @return null
-     */
     fetch_classes = async () => {
         try {
         setInterval( async () => {
@@ -54,9 +51,6 @@ export default class Navbar extends Component{
         }
     }
 
-    /**
-     * Append new node from the user 
-     */
     appendStreamNode = async (type) => {
         const pattern = {
             local : new RegExp('^https?://(localhost)(:[0-9]+)?(/)?$'),
@@ -88,13 +82,9 @@ export default class Navbar extends Component{
           }).catch((err)=> this.setState({'text': '','name' : '', 'error' : true,}))
     }
 
-    /**
-     * Render a tab for the Proxmox VNC that can be dragged into React Flow
-     */
     renderProxmoxVncTab = () => {
-        // Assuming the Proxmox VNC tab information is stored in the state
         const { proxmoxVncInfo } = this.state;
-        if (!proxmoxVncInfo) return null; // If no Proxmox VNC info, don't render anything
+        if (!proxmoxVncInfo) return null;
 
         return (
             <li onDragStart={(event) => this.onDragStart(event, 'proxmoxVNC', proxmoxVncInfo, -1)} 
@@ -108,22 +98,11 @@ export default class Navbar extends Component{
         );
     }
 
-    /**
-     * error check the user input
-     * @param {*} bool boolean of the current state of the modal  
-     */
     handelModal = (bool) => {
         this.setState({'error' : !bool ? false : this.state.error ,
                        'modal' : bool})
     }
 
-    /**
-     * when dragged get all the information needed
-     * @param {*} event 
-     * @param {*} nodeType string 'custom' node type
-     * @param {*} item object information returned from the api
-     * @param {*} index current index
-     */
     onDragStart = (event, nodeType, item, index) => {
         event.dataTransfer.setData('application/reactflow', nodeType);
         event.dataTransfer.setData('application/style', JSON.stringify({colour : this.state.colour[index], emoji : this.state.emoji[index] }))
@@ -131,12 +110,6 @@ export default class Navbar extends Component{
         event.dataTransfer.effectAllowed = 'move';
       };
 
-    /**
-     * droped event that occurs when the user drops the Tab within the tash div.
-     * The function just deletes all nodes within React-Flow enviorment related, 
-     * and remove it from the api.
-     * @param {*} e drop event  
-     */
     onDragDrop = (e) => {
         e.preventDefault();
         var item  = JSON.parse(e.dataTransfer.getData('application/item'));
@@ -146,20 +119,12 @@ export default class Navbar extends Component{
        
     }
 
-    /**
-     * update the tabs within the navbar
-     * @param {*} e current menu 
-     * @param {*} d integer variable of the diffence between the current menu and new menu updated ment
-     */
     handelTabs = async (e, d) => {
-        // if less then 0 we must remove colour's and emoji's
-        // get index of the object
-        // remove
         var c = []
         var j = []
         if (d.length - e.length === 0) return
         else if(d.length - e.length < 0){
-            var a = this.state.menu.filter(item => e.includes(item)) // get the items not in menu anymore
+            var a = this.state.menu.filter(item => e.includes(item)) 
             c = this.state.colour
             j = this.state.emoji
             for(var k=0; k < d.length; k++){
@@ -168,7 +133,6 @@ export default class Navbar extends Component{
             }
             this.setState({'colour' : c, 'emoji' : j})
         }else{
-            //append new colours
             for(var i =0; i < d.length; i++){
                     c.push(random_colour(i === 0 ? null : c[i-1]));
                     j.push(random_emoji(i === 0 ? null : c[i-1]));
@@ -184,28 +148,14 @@ export default class Navbar extends Component{
         this.setState({'error' : boolean})
     }
 
-    /**
-     * handel navagation open and close function
-     */
     handelNavbar = () => {
         this.setState({'open' : !this.state.open})
     }
 
-    /**
-     * 
-     * @param {*} e : event type to get the target value of the current input
-     * @param {*} type : text | name string that set the changed value of the input to the current value 
-     */
     updateText = (e, type) => {
         this.setState({[`${type}`] : e.target.value })
     }
 
-    /**
-     * 
-     * @param {*} item : object infomation from the flask api  
-     * @param {*} index : current index with in the list
-     * @returns div component that contians infomation of gradio 
-     */
     subComponents(item, index){
         
         return(<>
@@ -262,4 +212,3 @@ export default class Navbar extends Component{
         </div>)
     }
 }
-
