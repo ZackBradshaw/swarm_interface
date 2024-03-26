@@ -7,18 +7,20 @@ import { useState } from 'react'
 import { BsSearch } from 'react-icons/bs';
 
 export default function Import(props) {
+    // const [tab, setTab] = useState("gradio")
     const [subTab, setSubTab] = useState(0)
     const [embedUrl, setEmbedUrl] = useState("");
     const [vmid, setVmid] = useState('');
     const [node, setNode] = useState('');
     const [iframeSrc, setIframeSrc] = useState("");
     const [tab, setTab] = useState('')
-    const [iframeTitle, setIframeTitle] = useState(""); // Added state for iframeTitle
+    const [iframeTitle, setIframeTitle] = useState("")
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.debug("Embed submit:", iframeSrc);
-        props.onAddEmbed({ url: iframeSrc, title: iframeTitle, type: 'embed' }); // Modified to include title
+        props.onAddEmbed({ url: iframeSrc, type: 'embed', title: iframeTitle });
     };
 
     const handleProxmoxSubmit = async (e) => {
@@ -151,12 +153,12 @@ export default function Import(props) {
 
             {iframeSrc && (
                 <div className='p-5 flex flex-col items-start'>
-                    <iframe src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
+                    <iframe title={iframeTitle} src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
                 </div>
             )}
             {iframeSrc &&
                 <div className='p-5 flex flex-col items-start'>
-                    <iframe src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
+                    <iframe title={iframeTitle} src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
                 </div>
             }
             {tab === "proxmox" &&
@@ -314,3 +316,4 @@ function Shared(props) {
 
     )
 }
+
