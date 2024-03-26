@@ -23,8 +23,13 @@ export default function Import(props) {
         console.debug("Embed submit:", iframeSrc);
         if (typeof props.onAddEmbed === "function") {
             props.onAddEmbed({ url: iframeSrc, type: 'embed', title: iframeTitle });
+            setIframeSrc(''); // Clear the input after submission
+            setIframeTitle('');
+            props.handelError(false); // Reset any error states
+            props.quitHandeler(false); // Close the modal
         } else {
             console.error("onAddEmbed is not a function. Please ensure it's passed correctly.");
+            props.handelError(true);
         }
     };
 
@@ -80,6 +85,14 @@ export default function Import(props) {
                         props.catch ? props.handelError(false) : props.handelError(props.catch)
                     }}>
                         <button id="proxmox-tab" data-tabs-target="#Proxmox" type="button" role="tab" aria-controls="proxmox" aria-selected={tab === "proxmox" ? "true" : "false"} className={`inline-block p-4 rounded-tl-lg ${tab === "proxmox" ? 'bg-gray-200' : 'hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 focus:bg-gray-700'}`}><Proxmox className=" w-20 h-10" /></button>
+                    </li>
+                    <li className="" onClick={() => {
+                        setTab("embed")
+                        props.catch ? props.handelError(false) : props.handelError(props.catch)
+                    }}>
+                        <button id="embed-tab" data-tabs-target="#Embed" type="button" role="tab" aria-controls="embed" aria-selected={tab === "embed" ? "true" : "false"} className={`inline-block p-4 rounded-tl-lg ${tab === "embed" ? 'bg-gray-200' : 'hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 focus:bg-gray-700'}`}>
+                            <span role="img" aria-label="link" className="text-xl">🔗</span>
+                        </button>
                     </li>
                 </ul>
                 <div className='absolute right-5 top-5 z-20 mr-5'
@@ -140,24 +153,28 @@ export default function Import(props) {
                 </div>
             }
 
-            {tab === "IframeURL" && (
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Enter iframe title here..."
-                        value={iframeTitle}
-                        onChange={(e) => setIframeTitle(e.target.value)}
-                        className="input"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Enter iframe link here..."
-                        value={iframeSrc}
-                        onChange={(e) => setIframeSrc(e.target.value)}
-                        className="input"
-                    />
-                    <button type="submit" className="button">Embed</button>
-                </form>
+            {tab === "embed" && (
+                <div className='w-full bg-white p-5'>
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            placeholder="Enter iframe title here..."
+                            value={iframeTitle}
+                            onChange={(e) => setIframeTitle(e.target.value)}
+                            className="input input-bordered input-primary w-full max-w-xs"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Enter iframe link here..."
+                            value={iframeSrc}
+                            onChange={(e) => setIframeSrc(e.target.value)}
+                            className="input input-bordered input-primary w-full max-w-xs mt-2"
+                        />
+                        <button type="submit" className="btn btn-primary mt-2">
+                            Add Embed
+                        </button>
+                    </form>
+                </div>
             )}
 
             {iframeSrc && (
