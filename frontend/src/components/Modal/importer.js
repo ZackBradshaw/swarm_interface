@@ -17,10 +17,15 @@ export default function Import(props) {
     const [iframeTitle, setIframeTitle] = useState("")
 
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.debug("Embed submit:", iframeSrc);
-        props.onAddEmbed({ url: iframeSrc, type: 'embed', title: iframeTitle });
+        if (typeof props.onAddEmbed === "function") {
+            props.onAddEmbed({ url: iframeSrc, type: 'embed', title: iframeTitle });
+        } else {
+            console.error("onAddEmbed is not a function. Please ensure it's passed correctly.");
+        }
     };
 
     const handleProxmoxSubmit = async (e) => {
@@ -35,7 +40,11 @@ export default function Import(props) {
             .then(data => {
                 if (data.iframe_src) {
                     setIframeSrc(data.iframe_src);
-                    props.onAddEmbed({ url: data.iframe_src, type: 'embed' });
+                    if (typeof props.onAddEmbed === "function") {
+                        props.onAddEmbed({ url: data.iframe_src, type: 'embed' });
+                    } else {
+                        console.error("onAddEmbed is not a function. Please ensure it's passed correctly.");
+                    }
                 } else {
                     console.error("Failed to get iframe source URL");
                 }
