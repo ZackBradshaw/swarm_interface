@@ -146,56 +146,57 @@ export default function ReactEnviorment() {
         localStorage.removeItem('emoji')
       }
     },[reactFlowInstance]);
-
     const onDrop = useCallback(
       (event) => {
         event.preventDefault();
 
-        if(event.dataTransfer.getData('application/reactflow')  !== ""){
+        const reactFlowType = event.dataTransfer.getData('application/reactflow');
+        if (reactFlowType !== "") {
           const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-          const type = event.dataTransfer.getData('application/reactflow');
-          const item  = JSON.parse(event.dataTransfer.getData('application/item'));
+          const item = JSON.parse(event.dataTransfer.getData('application/item'));
           const style = JSON.parse(event.dataTransfer.getData('application/style'));
-          if (typeof type === 'undefined' || !type) {
-            return;
-          }
-    
           const position = reactFlowInstance.project({
             x: event.clientX - reactFlowBounds.left,
             y: event.clientY - reactFlowBounds.top,
           });
 
-          let newNode;
-          if (type === 'embed') {
-            newNode = {
-              id: `embed-${nodes.length + 1}`,
-              type: 'embed',
-              position,
-              data: { url: item.url, width: item.width, height: item.height },
-            };
-          } else if (type === 'customProxmox') {
-            newNode = {
+          let newNode = null;
+
+          switch (reactFlowType) {
+            case 'customProxmox':
+              newNode = {
                 id: `proxmox-vm-${nodes.length + 1}`,
                 type: 'customProxmox',
                 position,
                 data: { vmAddress: item.vmAddress },
-            };
-          } else {
-            newNode = {
-              id: `${item.name}-${nodes.length+1}`,
-              type,
-              position,
-              dragHandle : `#draggable`,
-              data: { label: `${item.name}`, host : `${item.host}`, colour : `${style.colour}`, emoji : `${style.emoji}`, delete : deleteNode },
-            };
+              };
+              break;
+            case 'embed':
+              newNode = {
+                id: `embed-${nodes.length + 1}`,
+                type: 'embed',
+                position,
+                data: { url: item.url, width: item.width, height: item.height },
+              };
+              break;
+            default:
+              newNode = {
+                id: `${item.name}-${nodes.length + 1}`,
+                type: reactFlowType,
+                position,
+                dragHandle: `#draggable`,
+                data: { label: item.name, host: item.host, colour: style.colour, emoji: style.emoji, delete: deleteNode },
+              };
+              break;
           }
-  
+
           if (newNode) {
             setNodes((nds) => nds.concat(newNode));
           }
-      }
+        }
       },
-      [reactFlowInstance, nodes, deleteNode]);
+      [reactFlowInstance, nodes, setNodes, deleteNode]
+    );
 
     // const addProxmoxVMNode = (vmAddress) => {
     //     const newNode = {
