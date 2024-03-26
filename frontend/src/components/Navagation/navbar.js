@@ -51,7 +51,14 @@ export default class Navbar extends Component{
         }
     }
 
-    appendStreamNode = async (type) => {
+    appendStreamNode = async (type, name, url) => {
+        const newNode = {
+            type,
+            name: name || `temp_class_${this.temp_host++}`,
+            host: url,
+            port: 0
+        };
+
         const pattern = {
             local : new RegExp('^https?://(localhost)(:[0-9]+)?(/)?$'),
             share : new RegExp('^https?://(?:[a-zA-Z0-9]+\\.gradio\\.live)/?$'),
@@ -59,14 +66,14 @@ export default class Navbar extends Component{
             proxmoxVNC: new RegExp('^wss?://([a-zA-Z0-9-]+\\.yourdomain\\.com)/?$') // Regex pattern for Proxmox VNC URLs
         } 
 
-        if (this.state.name.length > 20 ||
-            this.state.text === ""||
-            this.state.menu.findIndex(element => {return element.name.toLowerCase() === this.state.name.toLowerCase() || element.host.includes(this.state.text) }) !== -1 ||
-            this.state.text.includes(" ") || 
-            (!pattern.local.test(this.state.text) &&
-            !pattern.share.test(this.state.text) &&
-            !pattern.huggingFace.test(this.state.text) &&
-            !pattern.proxmoxVNC.test(this.state.text))){
+        if (newNode.name.length > 20 ||
+            url === ""||
+            this.state.menu.findIndex(element => {return element.name.toLowerCase() === newNode.name.toLowerCase() || element.host.includes(url) }) !== -1 ||
+            url.includes(" ") || 
+            (!pattern.local.test(url) &&
+            !pattern.share.test(url) &&
+            !pattern.huggingFace.test(url) &&
+            !pattern.proxmoxVNC.test(url))){
             
                 this.setState({
                     'text': '',
@@ -74,12 +81,14 @@ export default class Navbar extends Component{
                     'error': true})
                 return 
             } 
-        fetch(this.state.text, {method: "GET", mode: 'no-cors'}).then((re) => {
-            fetch("http://localhost:2000/api/append/port", {method: 'POST', mode : 'cors', headers : { 'Content-Type' : 'application/json' }, body: JSON.stringify({file : "", kwargs : { type : type }, name : this.state.name === "" ?`temp_class_${this.temp_host++}` : `${this.state.name}`, port: 0 , host : this.state.text}) }).then(resp => {
-                this.setState({'text': "",'name' : "",'error' : false,'modal' : false  })
 
-            }).catch(() => this.setState({'text': '', 'name' : '',  'error' : true, }))
-          }).catch((err)=> this.setState({'text': '','name' : '', 'error' : true,}))
+        this.setState(prevState => ({
+            menu: [...prevState.menu, newNode],
+            text: "",
+            name: "",
+            error: false,
+            modal: false
+        }));
     }
 
     renderProxmoxVncTab = () => {
@@ -152,21 +161,10 @@ export default class Navbar extends Component{
         this.setState({'open' : !this.state.open})
     }
 
-    /**
-     * 
-     * @param {*} e : event type to get the target value of the current input
-     * @param {*} type : text | name string that set the changed value of the input to the current value 
-     */
     updateText = (e, type) => {
         this.setState({[`${type}`] : e.target.value })
     }
 
-    /**
-     * 
-     * @param {*} item : object infomation from the flask api  
-     * @param {*} index : current index with in the list
-     * @returns div component that contians infomation of gradio 
-     */
     subComponents(item, index){
         
         return(<>
