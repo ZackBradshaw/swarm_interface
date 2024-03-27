@@ -215,19 +215,6 @@ export default function Import(props) {
                     <iframe title={iframeTitle} src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
                 </div>
             }
-
-            {/* <div className='embed-form p-5'>
-                <input
-                    type="text"
-                    placeholder="Embed URL"
-                    className="input input-bordered input-primary w-full max-w-xs"
-                    value={embedUrl}
-                    onChange={(e) => setEmbedUrl(e.target.value)}
-                />
-                <button className="btn btn-primary mt-2" onClick={() => props.onAddEmbed({ url: embedUrl, type: 'embed' })}>
-                    Add Embed
-                </button>
-            </div> */}
         </Modal>
     </div>)
 }
