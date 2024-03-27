@@ -147,79 +147,76 @@ export default function Import(props) {
                     </div>}
                 </div>
             }
+
             {tab === "streamlit" &&
                 <div className='w-full bg-white'>
                     <Shared type="streamlit" textHandler={props.textHandler} appendHandler={props.appendHandler} handelError={props.handelError} catch={props.catch} />
                 </div>
             }
 
-            {tab === "embed" && (
-                <div className='w-full bg-white p-5'>
-                    <form onSubmit={handleSubmit}>
+            {tab === "proxmox" &&
+            <div className='w-full bg-white p-5'>
+                <form onSubmit={handleProxmoxSubmit} className="space-y-4">
+                    <div className="flex flex-col">
                         <input
                             type="text"
-                            placeholder="Enter iframe title here..."
-                            value={iframeTitle}
-                            onChange={(e) => setIframeTitle(e.target.value)}
+                            placeholder="VM ID"
+                            value={vmid}
+                            onChange={(e) => setVmid(e.target.value)}
                             className="input input-bordered input-primary w-full max-w-xs"
                         />
+                    </div>
+                    <div className="flex flex-col">
                         <input
                             type="text"
-                            placeholder="Enter iframe link here..."
-                            value={iframeSrc}
-                            onChange={(e) => setIframeSrc(e.target.value)}
-                            className="input input-bordered input-primary w-full max-w-xs mt-2"
+                            placeholder="Node"
+                            value={node}
+                            onChange={(e) => setNode(e.target.value)}
+                            className="input input-bordered input-primary w-full max-w-xs"
                         />
+                    </div>
+                    <button className="btn btn-primary mt-2" type="submit">
+                        Generate Proxmox noVNC Session
+                    </button>
+                </form>
+            </div>
+            }
+
+            {tab === "embed" &&
+                <div className='w-full bg-white p-5'>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="flex flex-col">
+                            <input
+                                type="text"
+                                placeholder="Enter iframe title here..."
+                                value={iframeTitle}
+                                onChange={(e) => setIframeTitle(e.target.value)}
+                                className="input input-bordered input-primary w-full max-w-xs"
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <input
+                                type="text"
+                                placeholder="Enter iframe link here..."
+                                value={iframeSrc}
+                                onChange={(e) => setIframeSrc(e.target.value)}
+                                className="input input-bordered input-primary w-full max-w-xs"
+                            />
+                        </div>
                         <button type="submit" className="btn btn-primary mt-2">
                             Add Embed
                         </button>
                     </form>
                 </div>
-            )}
+            }
 
-            {iframeSrc && (
-                <div className='p-5 flex flex-col items-start'>
-                    <iframe title={iframeTitle} src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
-                </div>
-            )}
             {iframeSrc &&
                 <div className='p-5 flex flex-col items-start'>
                     <iframe title={iframeTitle} src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
                 </div>
             }
-            {tab === "proxmox" &&
-                <div className='w-full bg-white'>
-                    <form onSubmit={handleProxmoxSubmit} className="p-5">
-                        <input
-                            type="text"
-                            placeholder="VM ID"
-                            className="input input-bordered input-primary w-full max-w-xs"
-                            value={vmid}
-                            onChange={(e) => setVmid(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Node"
-                            className="input input-bordered input-primary w-full max-w-xs mt-2"
-                            value={node}
-                            onChange={(e) => setNode(e.target.value)}
-                        />
-                        <button className="btn btn-primary mt-2" type="submit">
-                            Generate Proxmox noVNC Session
-                        </button>
-                    </form>
-                    {iframeSrc &&
-                        <div className='p-5 flex flex-col items-start'>
-                            <a href={iframeSrc} target="_blank" rel="noopener noreferrer" className="mb-2 underline text-blue-600 hover:text-blue-800 visited:text-purple-600">Access Proxmox noVNC Session</a>
-                            <button onClick={() => navigator.clipboard.writeText(iframeSrc)} className="btn btn-primary">
-                                Copy Session Link
-                            </button>
-                        </div>
-                    }
-                </div>
-            }
 
-            <div className='embed-form p-5'>
+            {/* <div className='embed-form p-5'>
                 <input
                     type="text"
                     placeholder="Embed URL"
@@ -230,7 +227,7 @@ export default function Import(props) {
                 <button className="btn btn-primary mt-2" onClick={() => props.onAddEmbed({ url: embedUrl, type: 'embed' })}>
                     Add Embed
                 </button>
-            </div>
+            </div> */}
         </Modal>
     </div>)
 }
