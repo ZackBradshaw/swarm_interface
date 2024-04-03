@@ -163,7 +163,7 @@ export default function Import(props) {
                             placeholder="VM ID"
                             value={vmid}
                             onChange={(e) => setVmid(e.target.value)}
-                            className="input input-bordered input-primary w-full max-w-xs"
+                            className="input text-black input-bordered input-primary w-full max-w-xs"
                         />
                     </div>
                     <div className="flex flex-col">
@@ -172,10 +172,10 @@ export default function Import(props) {
                             placeholder="Node"
                             value={node}
                             onChange={(e) => setNode(e.target.value)}
-                            className="input input-bordered input-primary w-full max-w-xs"
+                            className="input text-black input-bordered input-primary w-full max-w-xs"
                         />
                     </div>
-                    <button className="btn btn-primary mt-2" type="submit">
+                    <button className="btn text-black btn-primary mt-2" type="submit">
                         Generate Proxmox noVNC Session
                     </button>
                 </form>
@@ -191,7 +191,7 @@ export default function Import(props) {
                                 placeholder="Enter iframe title here..."
                                 value={iframeTitle}
                                 onChange={(e) => setIframeTitle(e.target.value)}
-                                className="input input-bordered input-primary w-full max-w-xs"
+                                className="input text-black input-bordered input-primary w-full max-w-xs"
                             />
                         </div>
                         <div className="flex flex-col">
@@ -200,16 +200,15 @@ export default function Import(props) {
                                 placeholder="Enter iframe link here..."
                                 value={iframeSrc}
                                 onChange={(e) => setIframeSrc(e.target.value)}
-                                className="input input-bordered input-primary w-full max-w-xs"
+                                className="input text-black input-bordered input-primary w-full max-w-xs"
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary mt-2">
+                        <button type="submit" className="btn text-black btn-primary mt-2">
                             Add Embed
                         </button>
                     </form>
                 </div>
             }
-
             {iframeSrc &&
                 <div className='p-5 flex flex-col items-start'>
                     <iframe title={iframeTitle} src={iframeSrc} frameBorder="0" style={{ width: "100%", height: "400px" }} allowFullScreen></iframe>
