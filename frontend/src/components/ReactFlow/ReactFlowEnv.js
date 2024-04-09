@@ -1,4 +1,5 @@
 import Custom from "../Nodes/Custom.js";
+import StarNest from './StarNest';
 import CustomNodeIframe from "../Nodes/Custom.js";
 import '../../css/dist/output.css'
 import ReactFlow, { Background,
@@ -222,7 +223,9 @@ export default function ReactEnviorment() {
           <Navbar onDelete={deleteNodeContains} colour={JSON.parse(localStorage.getItem('colour'))} emoji={JSON.parse(localStorage.getItem('emoji'))} nodes={nodes}/>
             <div className="h-screen w-screen" ref={reactFlowWrapper}>
               <ReactFlow nodes={nodes} edges={edges} nodeTypes={NODE} edgeTypes={EDGE} onNodesChange={onNodesChange} onNodesDelete={deleteNode} onEdgesChange={onEdgesChange} onEdgeUpdate={onEdgeUpdate} onConnect={onConnect} onDragOver={onDragOver} onDrop={onDrop} onInit={setReactFlowInstance} connectionLineComponent={CustomLine} fitView>
-                <Background variant='dots' size={1} className=" bg-white dark:bg-neutral-800"/>
+                <Background>
+                  <StarNest/>
+                </Background>
                 <Controls/>
               </ReactFlow>
             </div>
