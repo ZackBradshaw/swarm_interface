@@ -87,18 +87,18 @@ def preview_vnc():
     src_href = f'https://{host}:8006/?console=kvm&novnc=1&node={nodeid}&resize=1&vmid={vmid}&path=api2/json/nodes/{nodeid}/qemu/{vmid}/vncwebsocket/port/{port}/vncticket/{ticket}'
     return jsonify({"iframe_src": src_href})
 
-@app.route("/api/proxmox/vnc", methods=["POST"])
-def create_proxmox_vnc():
-    data = request.json
-    vmid = data['vmid']
-    node = data['node']
-    proxmox = ProxmoxAPI('proxmox-domain', user='user@pam', password='password', verify_ssl=False)
-    config = proxmox.nodes(node).qemu(vmid).vncproxy.create(websocket=1)
-    ticket = proxmox.access.ticket.post(username='user@pam', password='password')['data']['ticket']
-    port = config['data']['port']
-    host = 'proxmox-domain'
-    src_href = f'https://{host}:8006/?console=kvm&novnc=1&node={node}&resize=1&vmid={vmid}&path=api2/json/nodes/{node}/qemu/{vmid}/vncwebsocket/port/{port}/vncticket/{ticket}'
-    return jsonify({"iframe_src": src_href})
+# @app.route("/api/proxmox/vnc", methods=["POST"])
+# def create_proxmox_vnc():
+#     data = request.json
+#     vmid = data['vmid']
+#     node = data['node']
+#     proxmox = ProxmoxAPI('proxmox-domain', user='user@pam', password='password', verify_ssl=False)
+#     config = proxmox.nodes(node).qemu(vmid).vncproxy.create(websocket=1)
+#     ticket = proxmox.access.ticket.post(username='user@pam', password='password')['data']['ticket']
+#     port = config['data']['port']
+#     host = 'proxmox-domain'
+#     src_href = f'https://{host}:8006/?console=kvm&novnc=1&node={node}&resize=1&vmid={vmid}&path=api2/json/nodes/{node}/qemu/{vmid}/vncwebsocket/port/{port}/vncticket/{ticket}'
+#     return jsonify({"iframe_src": src_href})
 
 @app.route("/api/append/port" , methods=["POST"])
 def append_port():
@@ -110,6 +110,20 @@ def append_port():
 def append_connection():
     current = request.json
     return jsonify({"executed" : True})
+
+@app.route("/api/proxmox/vnc", methods=["POST"])
+def create_proxmox_vnc():
+    data = request.json
+    vmid = data['vmid']
+    node = data['node']
+    # Make sure to replace 'proxmox-domain', 'user@pam', and 'password' with your actual Proxmox details
+    proxmox = ProxmoxAPI('proxmox-domain', user='user@pam', password='password', verify_ssl=False)
+    config = proxmox.nodes(node).qemu(vmid).vncproxy.create(websocket=1)
+    ticket = proxmox.access.ticket.post(username='user@pam', password='password')['data']['ticket']
+    port = config['data']['port']
+    host = 'proxmox-domain'
+    src_href = f'https://{host}:8006/?console=kvm&novnc=1&node={node}&resize=1&vmid={vmid}&path=api2/json/nodes/{node}/qemu/{vmid}/vncwebsocket/port/{port}/vncticket/{ticket}'
+    return jsonify({"iframe_src": src_href})
 
 @app.route("/api/remove/port" , methods=["POST"])
 def remove_port():

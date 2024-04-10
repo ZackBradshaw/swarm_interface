@@ -15,6 +15,8 @@ export default function Import(props) {
     const [iframeSrc, setIframeSrc] = useState("");
     const [tab, setTab] = useState('')
     const [iframeTitle, setIframeTitle] = useState("")
+    const [iframeLink, setIframeLink] = useState('');
+
 
 
 
@@ -34,31 +36,30 @@ export default function Import(props) {
     };
 
     const handleProxmoxSubmit = async (e) => {
-        e.preventDefault();
-        const requestData = { vmid, node };
-        fetch("http://localhost:2000/api/proxmox/vnc", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.iframe_src) {
-                    setIframeSrc(data.iframe_src);
-                    if (typeof props.onAddEmbed === "function") {
-                        props.onAddEmbed({ url: data.iframe_src, type: 'embed' });
-                    } else {
-                        console.error("onAddEmbed is not a function. Please ensure it's passed correctly.");
-                    }
-                } else {
-                    console.error("Failed to get iframe source URL");
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching iframe source URL:", error);
-            });
+    e.preventDefault();
+    const requestData = { vmid, node };
+    fetch("http://localhost:5000/api/proxmox/vnc", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.iframe_src) {
+        setIframeSrc(data.iframe_src);
+        if (typeof props.onAddProxmoxVnc === "function") {
+            props.onAddProxmoxVnc(data.iframe_src);
+        } else {
+            console.error("onAddProxmoxVnc is not a function. Please ensure it's passed correctly.");
+        }
+        } else {
+        console.error("Failed to get iframe source URL");
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching iframe source URL:", error);
+    });
     };
-
     return (<div>
         <Modal
             basic

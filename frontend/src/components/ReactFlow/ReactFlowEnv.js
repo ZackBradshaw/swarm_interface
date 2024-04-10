@@ -1,24 +1,25 @@
 import Custom from "../Nodes/Custom.js";
 import StarNest from './StarNest';
 import CustomNodeIframe from "../Nodes/Custom.js";
-import '../../css/dist/output.css'
-import ReactFlow, { Background,
-                    applyNodeChanges,
-                    ReactFlowProvider,
-                    addEdge,
-                    updateEdge,
-                    applyEdgeChanges,
-                    Controls,
-                    MarkerType
-                    } from 'react-flow-renderer';
-import React ,{ useState, useCallback, useRef, useEffect } from 'react';
+import '../../css/dist/output.css';
+import ReactFlow, {
+  Background,
+  applyNodeChanges,
+  ReactFlowProvider,
+  addEdge,
+  updateEdge,
+  applyEdgeChanges,
+  Controls,
+  MarkerType
+} from 'react-flow-renderer';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Navbar from '../Navagation/navbar';
-import CustomEdge from '../Edges/Custom'
+import CustomEdge from '../Edges/Custom';
 import CustomLine from "../Edges/CustomLine.js";
-import { useThemeDetector } from '../../helper/visual'
-import {CgMoreVerticalAlt} from 'react-icons/cg'
-import {BsFillEraserFill} from 'react-icons/bs' 
-import {FaRegSave} from 'react-icons/fa'
+import { useThemeDetector } from '../../helper/visual';
+import { CgMoreVerticalAlt } from 'react-icons/cg';
+import { BsFillEraserFill } from 'react-icons/bs';
+import { FaRegSave } from 'react-icons/fa';
 
 const NODE = {
     custom : CustomNodeIframe,
@@ -58,33 +59,27 @@ export default function ReactEnviorment() {
       restore();
     },[deleteNode, deleteEdge]);
 
-  //   const handleAddProxmoxVnc = async ({ vmid, node }) => {
-  //     const response = await fetch('http://localhost:5000/api/proxmox/vnc', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ vmid, node }),
-  //     });
-  //     const data = await response.json();
-  //     // Use data.iframe_src to create a new node in React Flow
-  //     const newNode = {
-  //       id: `proxmox-vnc-${nodes.length + 1}`,
-  //       type: 'custom',
-  //       position: reactFlowInstance.project({ x: 0, y: 0 }),
-  //       data: { label: `Proxmox VM ${vmid}`, url: data.iframe_src },
-  //     };
-  //     setNodes((nds) => nds.concat(newNode));
-  //   };
+  const handleAddProxmoxVnc = useCallback((iframeSrc) => {
+    const newNode = {
+      id: `proxmox-vnc-${nodes.length + 1}`,
+      type: 'custom',
+      position: reactFlowInstance.project({ x: 0, y: 0 }),
+      data: { label: `Proxmox VM`, url: iframeSrc },
+    };
+    setNodes((nds) => nds.concat(newNode));
+  }, [nodes, reactFlowInstance, setNodes]);
 
-  // const handleAddEmbed = useCallback((embedData) => {
-  //   const newNode = {
-  //     id: `embed-${nodes.length + 1}`,
-  //     type: 'embed',
-  //     position: reactFlowInstance.project({ x: 0, y: 0 }), // Adjust position as needed
-  //     data: { url: embedData.url, width: embedData.width || '100%', height: embedData.height || '400px' },
-  //   };
-  //   setNodes((nds) => nds.concat(newNode));
-  //   console.log(`Adding embed with URL: ${embedData.url} and Label: ${embedData.label}`);
-  // }, [nodes, reactFlowInstance]);
+
+  const handleAddEmbed = useCallback((embedData) => {
+    const newNode = {
+      id: `embed-${nodes.length + 1}`,
+      type: 'embed',
+      position: reactFlowInstance.project({ x: 0, y: 0 }), // Adjust position as needed
+      data: { url: embedData.url, width: embedData.width || '100%', height: embedData.height || '400px' },
+    };
+    setNodes((nds) => nds.concat(newNode));
+    console.log(`Adding embed with URL: ${embedData.url} and Label: ${embedData.label}`);
+  }, [nodes, reactFlowInstance]);
 
     const onNodesChange = useCallback(
       (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -162,7 +157,6 @@ export default function ReactEnviorment() {
           });
 
           let newNode = null;
-
           switch (reactFlowType) {
             case 'customProxmox':
               newNode = {
