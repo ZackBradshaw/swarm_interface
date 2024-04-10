@@ -1,6 +1,6 @@
+import * as THREE from 'three';
 import React, { useRef, useMemo } from 'react';
-import { extend, useFrame, useThree } from 'react-three-fiber';
-import { ShaderMaterial } from 'three';
+import { extend, useFrame, useThree } from '@react-three/fiber';
 
 // Star Nest Shader Code
 const starNestShader = `
@@ -66,30 +66,26 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 }
 `;
 
-// Define a custom shader material
-const StarNestMaterial = shaderMaterial(
-  {
-    uniforms: {
-      iTime: { value: 0 },
-      iResolution: { value: new THREE.Vector3() },
-      iMouse: { value: new THREE.Vector2(0, 0) },
-    },
-    vertexShader: `
-      void main() {
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: starNestShader,
+const StarNestMaterial = extend({
+  uniforms: {
+    iTime: { value: 0 },
+    iResolution: { value: new THREE.Vector3() },
+    iMouse: { value: new THREE.Vector2(0, 0) },
   },
-  THREE.ShaderMaterial
-);
+  vertexShader: `
+    void main() {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: starNestShader,
+});
 
 extend({ StarNestMaterial });
 
 const StarNestBackground = () => {
-  const ref = useRef();
-  const { size, viewport } = useThree();
-  const aspect = useMemo(() => new THREE.Vector2(viewport.width, viewport.height), [viewport]);
+    const ref = useRef();
+    const { viewport } = useThree(); // Remove 'size' from destructuring
+    const aspect = useMemo(() => new THREE.Vector2(viewport.width, viewport.height), [viewport]);
 
   useFrame(({ clock }) => {
     ref.current.uniforms.iTime.value = clock.getElapsedTime();
@@ -99,7 +95,7 @@ const StarNestBackground = () => {
   return (
     <mesh>
       <planeBufferGeometry args={[aspect.x, aspect.y]} />
-      <starNestMaterial ref={ref} />
+      <StarNestMaterial ref={ref} />
     </mesh>
   );
 };

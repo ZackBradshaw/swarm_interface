@@ -1,0 +1,1 @@
+const aspect = useMemo(() => new THREE.Vector2(viewport.width, viewport.height), [viewport]);
