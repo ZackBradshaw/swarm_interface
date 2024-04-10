@@ -177,7 +177,7 @@ export default function Import(props) {
                         />
                     </div>
                     <button className="btn text-black btn-primary mt-2" type="submit">
-                        Generate Proxmox noVNC Session
+                        Generate Link
                     </button>
                 </form>
             </div>
