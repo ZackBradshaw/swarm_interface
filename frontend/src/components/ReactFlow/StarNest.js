@@ -1,4 +1,5 @@
 import React from 'react';
+import 'gl-react'
 import { Shader } from 'gl-react';
 
 const fragShader = `
@@ -69,5 +70,4 @@ const StarNest = () => (
 );
 
 export default StarNest;
-
 
