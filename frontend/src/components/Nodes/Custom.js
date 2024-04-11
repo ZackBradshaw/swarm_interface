@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
+// import { Handle, Position } from "react-flow-renderer"
 import {TbResize} from 'react-icons/tb'
 import {BiCube, BiRefresh} from 'react-icons/bi'
 import {BsTrash} from 'react-icons/bs'
@@ -6,10 +7,12 @@ import {CgLayoutGridSmall} from 'react-icons/cg'
 import {useDrag} from '@use-gesture/react'
 import { useSpring, animated } from 'react-spring'
 
+import '../../css/counter.css'
+
 const MINIMUM_HEIGHT = 600;
 const MINIMUM_WIDTH = 540; 
 
-export default function CustomNodeIframe({id, data, handleAddEmbed, iframeSrc}){
+export default function CustomNodeIframe({id, data}){
     const [collapsed, setCollapsible] = useState(true)
     const [{width, height}, api] = useSpring(() => ({width: MINIMUM_WIDTH, height: MINIMUM_HEIGHT }))
     const [sizeAdjuster, setSizeAdjuster] = useState(false)
@@ -23,6 +26,7 @@ export default function CustomNodeIframe({id, data, handleAddEmbed, iframeSrc}){
         api.set({
           width: state.offset[0],
           height: state.offset[1],
+
         });
       } 
     }, {
@@ -34,31 +38,25 @@ export default function CustomNodeIframe({id, data, handleAddEmbed, iframeSrc}){
       },
     });
 
+    const isFetchable =useCallback(async () => {
+      return fetch(data.host, {mode: 'no-cors'}).then((res) => {
+        return true
+      }).catch((err)=>{
+        return false
+      })
+    }, [data.host])
+
     useEffect(() => {
       const fetched = setInterval(
         async () => {
-          setReachable(true)
-          clearInterval(fetched)
+          const fetch = await isFetchable()
+          if (fetch){
+            setReachable(true)
+            clearInterval(fetched)
+          }
         },1000) 
-    },[])
+    },[isFetchable])
 
-    // Utilize the iframeSrc prop passed from importer.js to set the iframe URL directly
-    const [iframeUrl, setIframeUrl] = useState(iframeSrc || '');
-    const [iframeLabel, setIframeLabel] = useState('');
-
-    const handleIframeUrlChange = (e) => {
-        setIframeUrl(e.target.value);
-    };
-
-    const handleIframeLabelChange = (e) => {
-        setIframeLabel(e.target.value);
-    };
-
-    const addIframeNode = () => {
-        handleAddEmbed({ url: iframeUrl, label: iframeLabel || 'Embedded Content' });
-        setIframeUrl(''); // Reset the input field after adding
-        setIframeLabel('');
-    };
 
     return (
     <div className="w-10 h-10">
@@ -68,7 +66,7 @@ export default function CustomNodeIframe({id, data, handleAddEmbed, iframeSrc}){
 
       <div className={` flex ${!collapsed ? '' : 'w-0 hidden'}`}>
                       <div title="Adjust Node Size" className="duration-300 cursor-pointer shadow-xl border-2 dark:border-white border-white h-10 w-10 mr-2 -mt-3 bg-Warm-Violet rounded-xl" onClick={() => {setSizeAdjuster((size) => !size)}}><TbResize className="h-full w-full text-white p-1"/></div>
-                      <a href={iframeUrl} target="_blank" rel="noopener noreferrer"><div title="Gradio Host Site" className="duration-300 cursor-pointer shadow-xl border-2 dark:border-white border-white h-10 w-10 mr-2 -mt-3 bg-Warm-Pink rounded-xl"><BiCube className="h-full w-full text-white p-1"/></div></a>
+                      <a href={data.host} target="_blank" rel="noopener noreferrer"><div title="Gradio Host Site" className="duration-300 cursor-pointer shadow-xl border-2 dark:border-white border-white h-10 w-10 mr-2 -mt-3 bg-Warm-Pink rounded-xl"><BiCube className="h-full w-full text-white p-1"/></div></a>
                       <div title="Delete Node" className="duration-300 cursor-pointer shadow-xl border-2 dark:border-white border-white h-10 w-10 mr-2 -mt-3 bg-Warm-Red rounded-xl" onClick={() => {data.delete([{id}])}}><BsTrash className="h-full w-full text-white p-1"/></div>
                       <div title="Refresh Node" className="duration-300 cursor-pointer shadow-xl border-2 dark:border-white border-white h-10 w-10 mr-2 -mt-3 bg-Warm-Orange rounded-xl" onClick={() => {setRefresh((old) => old++)}}><BiRefresh className="h-full w-full text-white p-1"/></div>
         </div>
@@ -79,7 +77,7 @@ export default function CustomNodeIframe({id, data, handleAddEmbed, iframeSrc}){
             <div id="draggable" className={`absolute h-full w-full ${data.colour} shadow-2xl rounded-xl -z-20`}></div>
             <iframe id="iframe" 
                         key={refresh}
-                        src={iframeUrl} // Use the iframeUrl state to dynamically set the iframe source
+                        src={data.host} 
                         title={data.label}
                         frameBorder="0"
                         className=" p-[0.6rem] -z-10 h-full w-full ml-auto mr-auto overflow-y-scroll"/>
