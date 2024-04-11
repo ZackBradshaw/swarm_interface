@@ -1,5 +1,5 @@
 import Custom from "../Nodes/Custom.js";
-import StarNest from './StarNest';
+import StarNest from './StarNest.js';
 import CustomNodeIframe from "../Nodes/Custom.js";
 import '../../css/dist/output.css';
 import ReactFlow, {
@@ -13,10 +13,10 @@ import ReactFlow, {
   MarkerType
 } from 'react-flow-renderer';
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import Navbar from '../Navagation/navbar';
-import CustomEdge from '../Edges/Custom';
+import Navbar from '../Navagation/navbar.js';
+import CustomEdge from '../Edges/Custom.js';
 import CustomLine from "../Edges/CustomLine.js";
-import { useThemeDetector } from '../../helper/visual';
+import { useThemeDetector } from '../../helper/visual.js';
 import { CgMoreVerticalAlt } from 'react-icons/cg';
 import { BsFillEraserFill } from 'react-icons/bs';
 import { FaRegSave } from 'react-icons/fa';
