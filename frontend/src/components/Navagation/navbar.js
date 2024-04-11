@@ -6,7 +6,7 @@ import { random_colour, random_emoji } from "../../helper/visual";
 import "../../css/dist/output.css"
 
 import {BsArrowLeftShort} from 'react-icons/bs';
-import {ReactComponent as ReactLogo} from '../../images/logo.svg'
+import {ReactComponent as ReactLogo} from '../../images/swarms-logo.svg'
 import chattyImage from '../../images/chatty.png'; // Import the image
 
 export default class Navbar extends Component{
@@ -192,7 +192,7 @@ export default class Navbar extends Component{
             <BsArrowLeftShort onClick={this.handelNavbar} className={`  bg-white text-Retro-darl-blue text-3xl rounded-full absolute -right-3 top-9 border border-black cursor-pointer ${!this.state.open && 'rotate-180'} dark:border-white duration-300 dark:text-white dark:bg-stone-900 `}/>
 
                 <div className="inline-flex w-full">
-                    <h1 className={`font-sans font-bold text-lg ${this.state.open ? "" : "hidden"} duration-500 ml-auto mr-auto`}>Chat-nFace</h1>
+                    <h1 className={`font-sans font-bold text-lg ${this.state.open ? "" : "hidden"} duration-500 ml-auto mr-auto`}> <ReactLogo className="w-9 h-9 ml-auto mr-auto"/>Swarms_Interface</h1>
                 </div>
 
                 <div className={`rounded-md text-center ${this.state.open ? "" : "px-0"} py-3`} onClick={() => {this.handelModal(true)}}>

@@ -5,7 +5,7 @@ import reportWebVitals from '../src/reportWebVitals';
 
 // Function to render the app only on the client-side
 const renderApp = () => {
-  const root = ReactDOM.createRoot(document.getElementById('Gradio-Flow'));
+  const root = ReactDOM.createRoot(document.getElementById('Swarm_Interface'));
   root.render(
     <React.StrictMode>
       <App/>
