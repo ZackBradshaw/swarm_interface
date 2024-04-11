@@ -12,6 +12,9 @@ export default function Import(props) {
     const [embedUrl, setEmbedUrl] = useState("");
     const [vmid, setVmid] = useState('');
     const [node, setNode] = useState('');
+    const [host, setHost] = useState('');
+    const [user, setUser] = useState('');
+    const [password, setPassword] = useState('');
     const [iframeSrc, setIframeSrc] = useState("");
     const [tab, setTab] = useState('')
     const [iframeTitle, setIframeTitle] = useState("")
@@ -37,7 +40,7 @@ export default function Import(props) {
 
     const handleProxmoxSubmit = async (e) => {
     e.preventDefault();
-    const requestData = { vmid, node };
+    const requestData = { vmid, node, host, user, password};
     fetch("http://localhost:5000/api/proxmox/vnc", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -60,6 +63,7 @@ export default function Import(props) {
         console.error("Error fetching iframe source URL:", error);
     });
     };
+
     return (<div>
         <Modal
             basic
@@ -173,6 +177,31 @@ export default function Import(props) {
                             placeholder="Node"
                             value={node}
                             onChange={(e) => setNode(e.target.value)}
+                            className="input text-black input-bordered input-primary w-full max-w-xs"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <input
+                            type="text"
+                            placeholder="Host IP"
+                            value={host}
+                            onChange={(e) => setHost(e.target.value)}
+                            className="input text-black input-bordered input-primary w-full max-w-xs"
+                        />
+                    </div><div className="flex flex-col">
+                        <input
+                            type="text"
+                            placeholder="User"
+                            value={user}
+                            onChange={(e) => setUser(e.target.value)}
+                            className="input text-black input-bordered input-primary w-full max-w-xs"
+                        />
+                    </div><div className="flex flex-col">
+                        <input
+                            type="text"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             className="input text-black input-bordered input-primary w-full max-w-xs"
                         />
                     </div>
