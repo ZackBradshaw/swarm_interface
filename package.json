@@ -3,6 +3,7 @@
     "@svgr/webpack": "^8.1.0"
   },
   "dependencies": {
+    "gl-react-dom": "^5.2.1",
     "react-scripts": "^5.0.1"
   }
 }

@@ -1,8 +1,9 @@
 import React from 'react';
-import 'gl-react'
-import { Shader } from 'gl-react';
+import { Shaders, Node, GLSL } from 'gl-react';
 
-const fragShader = `
+const shader = Shaders.create({ 
+  galaxy: {
+    frag: GLSL`
 #define iterations 17
 #define formuparam 0.53
 #define volsteps 20
@@ -56,16 +57,11 @@ s+=stepsize;
 v=mix(vec3(length(v)),v,saturation); //color adjust
 fragColor = vec4(v*.01,1.);	
 }
-`;
+`}});
 
 const StarNest = () => (
-  <Shader
-    frag={fragShader}
-    uniforms={{
-      iResolution: [window.innerWidth, window.innerHeight],
-      iTime: new Date().getTime(),
-      iMouse: [0, 0] // You can update these values based on actual mouse position
-    }}
+  <Node
+  shader={shader.galaxy}
   />
 );
 

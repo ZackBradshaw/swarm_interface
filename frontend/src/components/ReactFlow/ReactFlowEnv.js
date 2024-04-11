@@ -20,6 +20,7 @@ import { useThemeDetector } from '../../helper/visual.js';
 import { CgMoreVerticalAlt } from 'react-icons/cg';
 import { BsFillEraserFill } from 'react-icons/bs';
 import { FaRegSave } from 'react-icons/fa';
+import { Surface } from "gl-react-dom";
 
 const NODE = {
     custom : CustomNodeIframe,
@@ -217,7 +218,9 @@ export default function ReactEnviorment() {
           <Navbar onDelete={deleteNodeContains} colour={JSON.parse(localStorage.getItem('colour'))} emoji={JSON.parse(localStorage.getItem('emoji'))} nodes={nodes}/>
             <div className="h-screen w-screen" ref={reactFlowWrapper}>
               <ReactFlow nodes={nodes} edges={edges} nodeTypes={NODE} edgeTypes={EDGE} onNodesChange={onNodesChange} onNodesDelete={deleteNode} onEdgesChange={onEdgesChange} onEdgeUpdate={onEdgeUpdate} onConnect={onConnect} onDragOver={onDragOver} onDrop={onDrop} onInit={setReactFlowInstance} connectionLineComponent={CustomLine} fitView>
-                <StarNest />
+                <Surface width={1000} height={1000}>
+                  <StarNest />
+                </Surface>
                 <Controls/>
               </ReactFlow>
             </div>
