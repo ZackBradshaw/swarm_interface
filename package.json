@@ -3,7 +3,9 @@
     "@svgr/webpack": "^8.1.0"
   },
   "dependencies": {
+    "@react-three/drei": "^9.105.3",
     "gl-react-dom": "^5.2.1",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "three": "^0.163.0"
   }
 }

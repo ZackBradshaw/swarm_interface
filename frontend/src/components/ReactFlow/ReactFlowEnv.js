@@ -20,7 +20,6 @@ import { useThemeDetector } from '../../helper/visual.js';
 import { CgMoreVerticalAlt } from 'react-icons/cg';
 import { BsFillEraserFill } from 'react-icons/bs';
 import { FaRegSave } from 'react-icons/fa';
-import { Surface } from "gl-react-dom";
 
 const NODE = {
     custom : CustomNodeIframe,
@@ -194,36 +193,34 @@ export default function ReactEnviorment() {
       [reactFlowInstance, nodes, setNodes, deleteNode]
     );
 
-    // const addProxmoxVMNode = (vmAddress) => {
-    //     const newNode = {
-    //         id: `proxmox-vm-${nodes.length + 1}`,
-    //         type: 'proxmoxVM',
-    //         position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
-    //         data: { vmAddress },
-    //     };
-    //     setNodes((nds) => nds.concat(newNode));
-    //     setShowProxmoxForm(false);
-    // };
+  // const addProxmoxVMNode = (vmAddress) => {
+  //     const newNode = {
+  //         id: `proxmox-vm-${nodes.length + 1}`,
+  //         type: 'proxmoxVM',
+  //         position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
+  //         data: { vmAddress },
+  //     };
+  //     setNodes((nds) => nds.concat(newNode));
+  //     setShowProxmoxForm(false);
+  // };
 
-    return (
-      <div className={`${theme ? "dark" : ""}`}>          
-        <div className={` absolute text-center ${tool ? "h-[203.3333px]" : "h-[41px]"} overflow-hidden w-[41px] text-4xl top-4 right-5 z-50 cursor-default select-none bg-white dark:bg-stone-900 rounded-full border border-black dark:border-white duration-500`}  >
-          <CgMoreVerticalAlt className={` text-black dark:text-white ${tool ? "-rotate-0 mr-auto ml-auto mt-1" : " rotate-180 mr-auto ml-auto mt-1"} duration-300`} onClick={() => setTool(!tool)}/>
-          <h1 title={theme ? 'Dark Mode' : 'Light Mode'} className={`p-4 px-1 pb-0 ${tool ? "visible" : "invisible"} text-3xl`} onClick={() => setTheme(!theme)} >{theme  ? '🌙' : '☀️'}</h1> 
-          <FaRegSave title="Save" className={`mt-6 text-black dark:text-white ${tool ? "visible" : " invisible"} ml-auto mr-auto `} onClick={() => onSave()}/> 
-          <BsFillEraserFill title="Erase" className={`mt-6 text-black dark:text-white ml-auto mr-auto ${tool ? "visible" : " invisible"} `} onClick={() => onErase()}/>
-        </div>
-        <div className={`flex h-screen w-screen ${theme ? "dark" : ""} transition-all`}>    
-          <ReactFlowProvider>
-          <Navbar onDelete={deleteNodeContains} colour={JSON.parse(localStorage.getItem('colour'))} emoji={JSON.parse(localStorage.getItem('emoji'))} nodes={nodes}/>
-            <div className="h-screen w-screen" ref={reactFlowWrapper}>
-              <ReactFlow nodes={nodes} edges={edges} nodeTypes={NODE} edgeTypes={EDGE} onNodesChange={onNodesChange} onNodesDelete={deleteNode} onEdgesChange={onEdgesChange} onEdgeUpdate={onEdgeUpdate} onConnect={onConnect} onDragOver={onDragOver} onDrop={onDrop} onInit={setReactFlowInstance} connectionLineComponent={CustomLine} fitView>
-                <Surface width={1000} height={1000}>
-                  <StarNest />
-                </Surface>
-                <Controls/>
-              </ReactFlow>
-            </div>
+  return (
+    <div className={`${theme ? "dark" : ""}`}>
+      <div className={` absolute text-center ${tool ? "h-[203.3333px]" : "h-[41px]"} overflow-hidden w-[41px] text-4xl top-4 right-5 z-50 cursor-default select-none bg-white dark:bg-stone-900 rounded-full border border-black dark:border-white duration-500`}  >
+        <CgMoreVerticalAlt className={` text-black dark:text-white ${tool ? "-rotate-0 mr-auto ml-auto mt-1" : " rotate-180 mr-auto ml-auto mt-1"} duration-300`} onClick={() => setTool(!tool)} />
+        <h1 title={theme ? 'Dark Mode' : 'Light Mode'} className={`p-4 px-1 pb-0 ${tool ? "visible" : "invisible"} text-3xl`} onClick={() => setTheme(!theme)} >{theme ? '🌙' : '☀️'}</h1>
+        <FaRegSave title="Save" className={`mt-6 text-black dark:text-white ${tool ? "visible" : " invisible"} ml-auto mr-auto `} onClick={() => onSave()} />
+        <BsFillEraserFill title="Erase" className={`mt-6 text-black dark:text-white ml-auto mr-auto ${tool ? "visible" : " invisible"} `} onClick={() => onErase()} />
+      </div>
+      <div className={`flex h-screen w-screen ${theme ? "dark" : ""} transition-all`}>
+        <ReactFlowProvider>
+          <Navbar onDelete={deleteNodeContains} colour={JSON.parse(localStorage.getItem('colour'))} emoji={JSON.parse(localStorage.getItem('emoji'))} nodes={nodes} />
+          <div className="h-screen w-screen" ref={reactFlowWrapper}>
+            <ReactFlow nodes={nodes} edges={edges} nodeTypes={NODE} edgeTypes={EDGE} onNodesChange={onNodesChange} onNodesDelete={deleteNode} onEdgesChange={onEdgesChange} onEdgeUpdate={onEdgeUpdate} onConnect={onConnect} onDragOver={onDragOver} onDrop={onDrop} onInit={setReactFlowInstance} connectionLineComponent={CustomLine} fitView>
+              <StarNest />
+              <Controls />
+            </ReactFlow>
+          </div>
           </ReactFlowProvider>
         </div>
       </div>
