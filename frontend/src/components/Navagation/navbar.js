@@ -7,7 +7,6 @@ import "../../css/dist/output.css"
 
 import {BsArrowLeftShort} from 'react-icons/bs';
 import {ReactComponent as ReactLogo} from '../../images/swarms-logo.svg'
-import chattyImage from '../../images/chatty.png'; // Import the image
 
 export default class Navbar extends Component{
     constructor(props){

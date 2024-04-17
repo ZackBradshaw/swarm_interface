@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from 'three';
+import * as THREE from 'three';
 import { shaderMaterial } from '@react-three/drei';
 import { useMemo, useRef, useEffect } from 'react';
 import { extend, useFrame, useThree } from '@react-three/fiber';
@@ -79,8 +79,8 @@ export default function Background() {
 
   const uniforms = useMemo(() => ({
     iTime: { value: 0 },
-    iMouse: { value: new Vector2() },
-    iResolution: { value: new Vector3() }
+    iMouse: { value: new THREE.Vector2() },
+    iResolution: { value: new THREE.Vector3() }
   }), []);
 
   useFrame(() => {
